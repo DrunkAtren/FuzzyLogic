@@ -1,5 +1,3 @@
-import matplotlib.pyplot as plt
-import numpy as np
 import customtkinter
 
 customtkinter.set_appearance_mode("dark")
@@ -9,12 +7,12 @@ window.geometry("1920x1280")
 
 frame = customtkinter.CTkFrame(master=window)
 frame.pack(pady=20, padx=60, fill="both", expand=True)
-def slider_event(value):
+def slider_time(value):
     print(value)
 
-slider = customtkinter.CTkSlider(master=frame, command=slider_event, from_ = 0, to = 24, number_of_steps=24)
-slider.pack(pady=12, padx=10)
-slider.set(0.5)
+slider_time = customtkinter.CTkSlider(master=frame, command=slider_time, from_ = 0, to = 24, number_of_steps=24)
+slider_time.pack(pady=12, padx=10)
+slider_time.set(0.5)
 
 
 
