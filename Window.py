@@ -11,13 +11,10 @@ frame = customtkinter.CTkFrame(master=window)
 frame.pack(pady=20, padx=60, fill="both", expand=True)
 
 def season_slider(value):
-    print(value)
     lable_season.configure(text=f"Pora roku: {round(slider_season.get())}")
 def time_slider(value):
-    print(value)
     lable_time.configure(text=f"Godzina: {round(slider_time.get())}")
 def room_temp_slider(value):
-    print(value)
     lable_room_temp.configure(text=f"Temperatura Pokoju: {round(slider_room_temp.get())}")
 
 #GIT
