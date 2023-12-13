@@ -6,153 +6,170 @@ for i in range(0,47):
     x=i-5
     TEMP[0, i] = x
 
-    #temperatura bardzo zimno
+    #temperatura zimno
     if x >= -5 and x <= 0:
-       bzimno = 1
-    elif x >= 0 and x <= 5:
-       bzimno = (5-x)/(5-0)
+       zimno = 1
+    elif x >= 0 and x <= 10:
+       zimno = (10-x)/(10-0)
     else:
-       bzimno = 0
-    TEMP[1,i] = bzimno
+       zimno = 0
+    TEMP[1,i] = zimno
 
-    # temperatura zimno
-    if x>=0 and x<=5:
-       zimno=(x-0)/(5-0)
-    elif x>=5 and x<=10:
-       zimno=1
-    elif x>=10 and x<=15:
-       zimno=(15-x)/(15-10)
+    # temperatura letnio
+    if x>=0 and x<=10:
+       letnio=(x-0)/(10-0)
+    elif x>=10 and x<=20:
+       letnio=(20-x)/(20-10)
     else:
-       zimno=0
-    TEMP[2,i] = zimno
+       letnio=0
+    TEMP[2,i] = letnio
 
-    # temperatura umiarkowana
-    if x >= 10 and x <= 13:
-        umiarkowana = (x - 10) / (13 - 10)
-    elif x >= 13 and x <= 17:
-        umiarkowana = 1
-    elif x >= 17 and x <= 20:
-        umiarkowana = (20 - x) / (20 - 17)
+    # temperatura cieplo
+    if x >= 10 and x <= 20:
+        cieplo = (x - 10) / (20 - 10)
+    elif x >= 20 and x <= 30:
+        cieplo = (30 - x) / (30 - 20)
     else:
-        umiarkowana = 0
-    TEMP[3, i] = umiarkowana
+        cieplo = 0
+    TEMP[3, i] = cieplo
 
-    # temperatura goraca
-    if x >= 15 and x <= 20:
-        goraco = (x - 15) / (20 - 15)
-    elif x >= 20 and x <= 25:
+    # temperatura bardzo goraca
+    if x >= 20 and x <= 30:
+        goraco = (x - 20) / (30 - 20)
+    elif x >= 30 and x <= 40:
         goraco = 1
-    elif x >= 25 and x <= 30:
-        goraco = (30 - x) / (30 - 25)
     else:
         goraco = 0
     TEMP[4, i] = goraco
 
-    # temperatura bardzo goraca
-    x = -5 + i
-    if x >= 25 and x <= 30:
-        bgoraco = (x - 25) / (30 - 25)
-    elif x >= 30 and x <= 40:
-        bgoraco = 1
+WYJ = np.zeros((6, 102))
+for i in range(0,102):
+    x=i-1
+    WYJ[0, i] = x
+
+
+    if x == 0:
+        WyjZimna = 1
     else:
-        bgoraco = 0
-    TEMP[5, i] = bgoraco
+        WyjZimna = 0
+    WYJ[1, i] = WyjZimna
 
-UST = np.zeros((6, 48))
-for i in range(0,47):
-    x=i-5
-    UST[0, i] = x
-
-
-    if x >= -5 and x <= 0:
-        UstZimna = 1
-    elif x >= 0 and x <= 10:
-        UstZimna = (10 - x) / (10 - 0)
+    if x == 25:
+       WyjMala = 1
     else:
-        UstZimna = 0
-    UST[1, i] = UstZimna
+       WyjMala = 0
+    WYJ[2,i] = WyjMala
 
-    if x >= 0 and x <= 15:
-       UstSrednia = (x - 0) / (15 - 0)
-    elif x >= 15 and x <= 30:
-       UstSrednia = (30 - x) / (30 - 15)
+    if x == 50:
+        WyjSrednia = 1
     else:
-       UstSrednia = 0
-    UST[2,i] = UstSrednia
+        WyjSrednia = 0
+    WYJ[3, i] = WyjSrednia
 
-    if x >= 20 and x <= 30:
-        UstWysoka = (x - 20) / (30 - 20)
-    elif x >= 30 and x <=35:
-        UstWysoka = 1
+    if x == 75:
+        WyjWysoka = 1
     else:
-        UstWysoka = 0
-    UST[3, i] = UstWysoka
+        WyjWysoka = 0
+    WYJ[4, i] = WyjWysoka
 
+    if x == 100:
+        WyjMax = 1
+    else:
+        WyjMax = 0
+    WYJ[5, i] = WyjMax
 
 #---- graficzna prezentacja zbiorow temperatury
+
 plt.figure(1)
 
 plt.xlabel('Temperatura [C]')
 plt.ylabel('Wzrost')
 plt.title('Zbiór rozmyty temperatury')
 
-plt.plot(TEMP[0, :], TEMP[1, :], 'b')
-plt.axis([-5,4,0,1.1])
-
-plt.plot(TEMP[0, :], TEMP[2, :], 'g')
+plt.plot(TEMP[0, :], TEMP[1, :], 'blue')
 plt.axis([-5,35,0,1.1])
 
-plt.plot(TEMP[0, :], TEMP[3, :], 'y')
+plt.plot(TEMP[0, :], TEMP[2, :], 'green')
 plt.axis([-5,35,0,1.1])
 
-plt.plot(TEMP[0, :], TEMP[4, :], 'orange')
+plt.plot(TEMP[0, :], TEMP[3, :], 'orange')
 plt.axis([-5,35,0,1.1])
 
-plt.plot(TEMP[0, :], TEMP[5, :], 'red')
+plt.plot(TEMP[0, :], TEMP[4, :], 'red')
 plt.axis([-5,35,0,1.1])
 
 plt.figure(2)
 
-plt.xlabel('Temperatura [C]')
+plt.xlabel('%')
 plt.ylabel('Wzrost')
-plt.title('Zbiór rozmyty temperatury')
+plt.title('Wyjsciowy')
+
+plt.plot(WYJ[0, :], WYJ[1, :], 'black')
+plt.axis([0,102,0,1])
+
+plt.plot(WYJ[0, :], WYJ[2, :], 'black')
+plt.axis([0,102,0,1])
+
+plt.plot(WYJ[0, :], WYJ[3, :], 'black')
+plt.axis([0,102,0,1])
+
+plt.plot(WYJ[0, :], WYJ[4, :], 'black')
+plt.axis([0,102,0,1])
+
+plt.plot(WYJ[0, :], WYJ[5, :], 'black')
+plt.axis([0,102,0,1])
 
 
-plt.plot(UST[0, :], UST[1, :], 'b')
-plt.axis([-5,35,0,1.1])
+TempPokoju = 10+ 5
 
-plt.plot(UST[0, :], UST[2, :], 'g')
-plt.axis([-5,35,0,1.1])
+TempUstawiana = 20+5
 
-plt.plot(UST[0, :], UST[3, :], 'y')
-plt.axis([-5,35,0,1.1])
+Zmiana = TempUstawiana-TempPokoju
 
+print(TEMP[1,TempPokoju], TEMP[2,TempPokoju], TEMP[3,TempPokoju], TEMP[4,TempPokoju])
 
-TempPokoju = 5+ 5
-
-TempUstawiana = 19+5
-
-print(TEMP[1,TempPokoju], TEMP[2,TempPokoju], TEMP[3,TempPokoju], TEMP[4,TempPokoju], TEMP[5,TempPokoju])
-
-#TEMP1= Bardzo zimny / TEMP2= Zimno / TEMP3 = Umiarkowanie / TEMP 4 = Goraco / TEMP5 = Bardzo goraco
+#TEMP1= Zimny / TEMP2= Letnio / TEMP3 = Cieplo / TEMP4 = Goraco
 
 
-#Maly =[0.5,1,0.5,0,0]
-#Sredni ={0,0.5,1.0,0.5,0}
-#Duzy ={0,0,0,0.5,1.0}
+#Zero =[1,0,0,0,0]
+#Maly ={0,1,0,0,0}
+#Sredni ={0,0,1,0,0}
+#Duzy ={0,0,0,1,0}
+#Max ={0,0,0,0,1}
 
-#r1 IF TempPokoju = Bardzo zimny AND TempUstawiana = UstSrednia THEN Sredni
-#r2 IF TempPokoju = Bardzo zimny AND TempUstawiana = UstWysoka THEN Duzy
-#r3 IF TempPokoju = Zimny AND TempUstawiana = UstSrednia THEN Maly
-#r4 IF TempPokoju = Zimny AND TempUstawiana = UstWysoka THEN Duzy
-#r5 IF TempPokoju = Umiarkowana AND TempUstawiana = UstWysoka THEN Duzy
+#r1 IF TempPokoju = Zimny AND Zmiana = Zimny THEN Zero
+#r2 IF TempPokoju = Zimny AND Zmiana = UstMaly THEN Maly
+#r3 IF TempPokoju = Zimny AND Zmiana = UstSrednia THEN Sredni
+#r4 IF TempPokoju = Zimny AND Zmiana = UstDuzy THEN Duzy
+#r5 IF TempPokoju = Zimny AND Zmiana = UstMax THEN Max
 
-T1 = TEMP[1,TempPokoju]
-T2 = TEMP[2,TempPokoju]
-T3 = TEMP[3,TempPokoju]
+#r6 IF TempPokoju = Letnio AND Zmiana = UstZimna THEN Zero
+#r7 IF TempPokoju = Letnio AND Zmiana = UstMaly THEN Zero
+#r8 IF TempPokoju = Letnio AND Zmiana = UstSrednia THEN Zero
+#r9 IF TempPokoju = Letnio AND Zmiana = UstDuzy THEN Duzy
+#r10 IF TempPokoju = Letnio AND Zmiana = UstMax THEN Max
 
-U2 = UST[2,TempUstawiana]
-U3 = UST[3,TempUstawiana]
+#r11 IF TempPokoju = Cieplo AND Zmiana = UstZimna THEN Zero
+#r12 IF TempPokoju = Cieplo AND Zmiana = UstMaly THEN Zero
+#r13 IF TempPokoju = Cieplo AND Zmiana = UstSrednia THEN Zero
+#r14 IF TempPokoju = Cieplo AND Zmiana = UstDuzy THEN Zero
+#r15 IF TempPokoju = Cieplo AND Zmiana = UstMax THEN Max
+
+#r16 IF TempPokoju = Goraco AND Zmiana = UstZimna THEN Zero
+#r17 IF TempPokoju = Goraco AND Zmiana = UstMaly THEN Zero
+#r18 IF TempPokoju = Goraco AND Zmiana = UstSrednia THEN Zero
+#r19 IF TempPokoju = Goraco AND Zmiana = UstDuzy THEN Zero
+#r20 IF TempPokoju = Goraco AND Zmiana = UstMax THEN Max
+
+
+T1 = TEMP[1,Zmiana]
+T2 = TEMP[2,Zmiana]
+T3 = TEMP[3,Zmiana]
+T4 = TEMP[4,Zmiana]
+
+
+U2 = WYJ[2,Zmiana]
+U3 = WYJ[3,Zmiana]
 
 R1=min(T1,U2)
 R2=min(T1,U3)
@@ -160,15 +177,38 @@ R3=min(T2,U2)
 R4=min(T2,U3)
 R5=min(T3,U3)
 
-a = UST[1,TempUstawiana]
-b = UST[2,TempUstawiana]
-c = UST[3,TempUstawiana]
+R6=min(T1,U2)
+R7=min(T1,U3)
+R8=min(T2,U2)
+R9=min(T2,U3)
+R10=min(T3,U3)
 
-Maly =[0.5,1,0.5,0,0]
-Sredni = [0,0.5,1.0,0.5,0]
-Duzy = [0,0,0,0.5,1.0]
+R11=min(T1,U2)
+R12=min(T1,U3)
+R13=min(T2,U2)
+R14=min(T2,U3)
+R15=min(T3,U3)
 
-print (a,b,c)
+R16=min(T1,U2)
+R17=min(T1,U3)
+R18=min(T2,U2)
+R19=min(T2,U3)
+R20=min(T3,U3)
+
+US1 = WYJ[1,TempUstawiana]
+US2 = WYJ[2,TempUstawiana]
+US3 = WYJ[3,TempUstawiana]
+US4 = WYJ[4,TempUstawiana]
+US5 = WYJ[5,TempUstawiana]
+
+
+Zero =[1,0,0,0,0]
+Maly =[0,1,0,0,0]
+Sredni =[0,0,1,0,0]
+Duzy =[0,0,0,1,0]
+Max =[0,0,0,0,1]
+
+print (US1,US2,US3,US4)
 print (R1,R2,R3,R4,R5)
 if R3!=0:
     Maly =[min(0.5,R3),min(1,R3),min(0.5,R3),min(0,R3),min(0,R3),min(0,R3)]
@@ -185,35 +225,11 @@ elif R5!=0:
 
 
 
-
 #TEMP[1,TempPokoju] UST[2,TempUstawiana]
 #TEMP[1,TempPokoju] UST[3,TempUstawiana]
 #TEMP[2,TempPokoju] UST[2,TempUstawiana]
 #TEMP[2,TempPokoju] UST[3,TempUstawiana]
 #TEMP[3,TempPokoju] UST[3,TempUstawiana]
 
-#UstZimna UstSrednia UstWysoka
 
 plt.show()
-
-
-
-#r1 IF TempPokoju = Bardzo zimny AND TempUstawiana = UstZimna THEN Wylacz
-#r2 IF TempPokoju = Bardzo zimny AND TempUstawiana = UstSrednia THEN Sredni
-#r3 IF TempPokoju = Bardzo zimny AND TempUstawiana = UstWysoka THEN Duzy
-
-#r4 IF TempPokoju = Zimny AND TempUstawiana = UstZimna THEN Wylacz
-#r5 IF TempPokoju = Zimny AND TempUstawiana = UstSrednia THEN Maly
-#r6 IF TempPokoju = Zimny AND TempUstawiana = UstWysoka THEN Duzy
-
-#r7 IF TempPokoju = Umiarkowana AND TempUstawiana = UstZimna THEN Wylacz
-#r8 IF TempPokoju = Umiarkowana AND TempUstawiana = UstSrednia THEN Wylacz
-#r9 IF TempPokoju = Umiarkowana AND TempUstawiana = UstWysoka THEN Duzy
-
-#r10 IF TempPokoju = Goraco AND TempUstawiana = UstZimna THEN Wylacz
-#r11 IF TempPokoju = Goraco AND TempUstawiana = UstSrednia THEN Wylacz
-#r12 IF TempPokoju = Goraco AND TempUstawiana = UstWysoka THEN Wylacz
-
-#r13 IF TempPokoju = BGoraco AND TempUstawiana = UstZimna THEN Wylacz
-#r14 IF TempPokoju = BGoraco AND TempUstawiana = UstSrednia THEN Wylacz
-#r15 IF TempPokoju = BGoraco AND TempUstawiana = UstWysoka THEN Wylacz
