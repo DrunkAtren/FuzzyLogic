@@ -127,9 +127,6 @@ plt.axis([-5,35,0,1.1])
 plt.plot(UST[0, :], UST[3, :], 'y')
 plt.axis([-5,35,0,1.1])
 
-#testowanie wartosci
-TempZew = 0
-TempPiec = 12
 
 TempPokoju = 5+ 5
 
@@ -186,7 +183,6 @@ elif R4!=0:
 elif R5!=0:
     Duzy = [min(0, R5), min(0, R5), min(0, R5), min(0.5, R5), min(1, R5)]
 
-print(Maly)
 
 
 
