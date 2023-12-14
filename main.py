@@ -42,44 +42,35 @@ for i in range(0,47):
         goraco = 0
     TEMP[4, i] = goraco
 
-WYJ = np.zeros((6, 102))
-for i in range(0,102):
-    x=i-1
-    WYJ[0, i] = x
+UST = np.zeros((6, 48))
+for i in range(0,47):
+    x=i-5
+    UST[0, i] = x
 
 
-    if x == 0:
-        WyjZimna = 1
+    if x >= -5 and x <= 0:
+        UstZimna = 1
+    elif x >= 0 and x <= 10:
+        UstZimna = (10 - x) / (10 - 0)
     else:
-        WyjZimna = 0
-    WYJ[1, i] = WyjZimna
+        UstZimna = 0
+    UST[1, i] = UstZimna
 
-    if x == 25:
-       WyjMala = 1
+    if x >= 0 and x <= 15:
+       UstSrednia = (x - 0) / (15 - 0)
+    elif x >= 15 and x <= 30:
+       UstSrednia = (30 - x) / (30 - 15)
     else:
-       WyjMala = 0
-    WYJ[2,i] = WyjMala
+       UstSrednia = 0
+    UST[2,i] = UstSrednia
 
-    if x == 50:
-        WyjSrednia = 1
+    if x >= 20 and x <= 30:
+        UstWysoka = (x - 20) / (30 - 20)
+    elif x >= 30 and x <=35:
+        UstWysoka = 1
     else:
-        WyjSrednia = 0
-    WYJ[3, i] = WyjSrednia
-
-    if x == 75:
-        WyjWysoka = 1
-    else:
-        WyjWysoka = 0
-    WYJ[4, i] = WyjWysoka
-
-    if x == 100:
-        WyjMax = 1
-    else:
-        WyjMax = 0
-    WYJ[5, i] = WyjMax
-
-#---- graficzna prezentacja zbiorow temperatury
-
+        UstWysoka = 0
+    UST[3, i] = UstWysoka
 plt.figure(1)
 
 plt.xlabel('Temperatura [C]')
@@ -98,26 +89,6 @@ plt.axis([-5,35,0,1.1])
 plt.plot(TEMP[0, :], TEMP[4, :], 'red')
 plt.axis([-5,35,0,1.1])
 
-plt.figure(2)
-
-plt.xlabel('%')
-plt.ylabel('Wzrost')
-plt.title('Wyjsciowy')
-
-plt.plot(WYJ[0, :], WYJ[1, :], 'black')
-plt.axis([0,102,0,1])
-
-plt.plot(WYJ[0, :], WYJ[2, :], 'black')
-plt.axis([0,102,0,1])
-
-plt.plot(WYJ[0, :], WYJ[3, :], 'black')
-plt.axis([0,102,0,1])
-
-plt.plot(WYJ[0, :], WYJ[4, :], 'black')
-plt.axis([0,102,0,1])
-
-plt.plot(WYJ[0, :], WYJ[5, :], 'black')
-plt.axis([0,102,0,1])
 
 
 TempPokoju = 10+ 5
@@ -130,12 +101,6 @@ print(TEMP[1,TempPokoju], TEMP[2,TempPokoju], TEMP[3,TempPokoju], TEMP[4,TempPok
 
 #TEMP1= Zimny / TEMP2= Letnio / TEMP3 = Cieplo / TEMP4 = Goraco
 
-
-#Zero =[1,0,0,0,0]
-#Maly ={0,1,0,0,0}
-#Sredni ={0,0,1,0,0}
-#Duzy ={0,0,0,1,0}
-#Max ={0,0,0,0,1}
 
 #r1 IF TempPokoju = Zimny AND Zmiana = Zimny THEN Zero
 #r2 IF TempPokoju = Zimny AND Zmiana = UstMaly THEN Maly
@@ -195,11 +160,11 @@ R18=min(T2,U2)
 R19=min(T2,U3)
 R20=min(T3,U3)
 
-US1 = WYJ[1,TempUstawiana]
-US2 = WYJ[2,TempUstawiana]
-US3 = WYJ[3,TempUstawiana]
-US4 = WYJ[4,TempUstawiana]
-US5 = WYJ[5,TempUstawiana]
+# US1 = WYJ[1,TempUstawiana]
+# US2 = WYJ[2,TempUstawiana]
+# US3 = WYJ[3,TempUstawiana]
+# US4 = WYJ[4,TempUstawiana]
+# US5 = WYJ[5,TempUstawiana]
 
 
 Zero =[1,0,0,0,0]
@@ -208,7 +173,7 @@ Sredni =[0,0,1,0,0]
 Duzy =[0,0,0,1,0]
 Max =[0,0,0,0,1]
 
-print (US1,US2,US3,US4)
+# print (US1,US2,US3,US4)
 print (R1,R2,R3,R4,R5)
 if R3!=0:
     Maly =[min(0.5,R3),min(1,R3),min(0.5,R3),min(0,R3),min(0,R3),min(0,R3)]
@@ -224,12 +189,6 @@ elif R5!=0:
     Duzy = [min(0, R5), min(0, R5), min(0, R5), min(0.5, R5), min(1, R5)]
 
 
-
-#TEMP[1,TempPokoju] UST[2,TempUstawiana]
-#TEMP[1,TempPokoju] UST[3,TempUstawiana]
-#TEMP[2,TempPokoju] UST[2,TempUstawiana]
-#TEMP[2,TempPokoju] UST[3,TempUstawiana]
-#TEMP[3,TempPokoju] UST[3,TempUstawiana]
 
 
 plt.show()
