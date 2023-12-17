@@ -7,36 +7,36 @@ for i in range(0,47):
     TEMP[0, i] = x
 
     #temperatura zimno
-    if x >= -5 and x <= 0:
+    if x >= 0 and x <= 5:
        zimno = 1
-    elif x >= 0 and x <= 10:
-       zimno = (10-x)/(10-0)
+    elif x >= 5 and x <= 15:
+       zimno = (15-x)/(15-5)
     else:
        zimno = 0
     TEMP[1,i] = zimno
 
     # temperatura letnio
-    if x>=0 and x<=10:
-       letnio=(x-0)/(10-0)
-    elif x>=10 and x<=20:
-       letnio=(20-x)/(20-10)
+    if x>=5 and x<=15:
+       letnio=(x-5)/(15-5)
+    elif x>=15 and x<=25:
+       letnio=(25-x)/(25-15)
     else:
        letnio=0
     TEMP[2,i] = letnio
 
     # temperatura cieplo
-    if x >= 10 and x <= 20:
-        cieplo = (x - 10) / (20 - 10)
-    elif x >= 20 and x <= 30:
-        cieplo = (30 - x) / (30 - 20)
+    if x >= 15 and x <= 25:
+        cieplo = (x - 15) / (25 - 15)
+    elif x >= 25 and x <= 35:
+        cieplo = (35 - x) / (35 - 25)
     else:
         cieplo = 0
     TEMP[3, i] = cieplo
 
     # temperatura bardzo goraca
-    if x >= 20 and x <= 30:
-        goraco = (x - 20) / (30 - 20)
-    elif x >= 30 and x <= 40:
+    if x >= 25 and x <= 35:
+        goraco = (x - 25) / (35 - 25)
+    elif x >= 35 and x <= 40:
         goraco = 1
     else:
         goraco = 0
@@ -74,16 +74,16 @@ plt.ylabel('Wzrost')
 plt.title('Zbiór rozmyty temperatury')
 
 plt.plot(TEMP[0, :], TEMP[1, :], 'blue')
-plt.axis([-5,35,0,1.1])
+plt.axis([0,40,0,1.1])
 
 plt.plot(TEMP[0, :], TEMP[2, :], 'green')
-plt.axis([-5,35,0,1.1])
+plt.axis([0,40,0,1.1])
 
 plt.plot(TEMP[0, :], TEMP[3, :], 'orange')
-plt.axis([-5,35,0,1.1])
+plt.axis([0,40,0,1.1])
 
 plt.plot(TEMP[0, :], TEMP[4, :], 'red')
-plt.axis([-5,35,0,1.1])
+plt.axis([0,40,0,1.1])
 
 plt.figure(2)
 
