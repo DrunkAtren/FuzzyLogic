@@ -156,14 +156,14 @@ def xyz():
 
     if Zmiana<0:
         TempPiec = 0
-    elif R1 > 0:
-        TempPiec = 2
-    elif R2 > 0:
-        TempPiec = 3
-    elif R3 > 0:
-        TempPiec = 4
     elif R4 > 0:
         TempPiec = 5
+    elif R3 > 0:
+        TempPiec = 4
+    elif R2 > 0:
+        TempPiec = 3
+    elif R1 > 0:
+        TempPiec = 2
     time.sleep(5)
 
 while True:
