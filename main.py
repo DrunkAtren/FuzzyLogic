@@ -120,58 +120,82 @@ plt.axis([0,100,0,1.1])
 plt.plot(UST[0, :], UST[5, :], 'b')
 plt.axis([0,100,0,1.1])
 
-TempZew = 15
+plt.show()
+
+MocPiec = 0
+TempZew = -5
 TempPiec = 0
 TempPokoju = TempZew + TempPiec
 #Pokoj
 TempUstawiana = 20
-
+y=0
 
 #TEMP1= Zimno / TEMP2= Letnio / TEMP3 = Cieplo / TEMP4 = Goraco
 
-timeout = 5.0
-
 def xyz():
+    global MocPiec
+    global y
     global Zmiana
     global TempPiec
     global TempPokoju
     global TempUstawiana
 
-    TempPokoju = TempPokoju - 1 + TempPiec
+
+    if MocPiec==0:
+        TempPokoju = TempPokoju - 1
+    else:
+        TempPokoju = TempPokoju - 1 + int(TempPiec / 5)
+
     Zmiana = TempUstawiana - TempPokoju
 
-
-
     print("-----")
-    print(TempPiec)
+    print(TempPiec, "Temperatura Pieca")
 
-    print(TempPokoju)
-    print(Zmiana)
+    print(TempPokoju,"Temperatura Pokoju")
+    print(Zmiana, "Zmiana")
     print(TEMP[1, Zmiana], TEMP[2, Zmiana], TEMP[3, Zmiana], TEMP[4, Zmiana])
 
     R1 = TEMP[1, Zmiana]
     R2 = TEMP[2, Zmiana]
     R3 = TEMP[3, Zmiana]
     R4 = TEMP[4, Zmiana]
+    R5 = 0 #else do regul
 
-    if Zmiana<0:
-        TempPiec = 0
-    elif R4 > 0:
-        TempPiec = 5
-    elif R3 > 0:
-        TempPiec = 4
-    elif R2 > 0:
-        TempPiec = 3
-    elif R1 > 0:
-        TempPiec = 2
-    time.sleep(5)
+
+    wynik=(R5+R1+R2+R3+R4)
+    if wynik>0:
+        wynik=wynik
+    elif wynik==0:
+        wynik=1
+
+    y = (R5*0+R1 * 25 + R2 * 50 + R3 * 75 + R4 * 100)/wynik
+    print(y)
+
+    # r1 IF Zmiana = Zimno THEN Maly
+    # r2 IF Zmiana = Letnio  THEN Sredni
+    # r3 IF Zmiana = Cieplo  THEN Duzy
+    # r4 IF Zmiana = Goraco  THEN Max
+    # r5 IF Zmiana<0 THEN Wylacz
+
+    if y<=0:
+        MocPiec = 0
+    elif y >= 100:
+        MocPiec = 5
+    elif y >= 75:
+        MocPiec = 4
+    elif y >= 50:
+        MocPiec = 3
+    elif y >= 25:
+        MocPiec = 2
+
+    if MocPiec>0:
+        TempPiec = TempPiec + MocPiec
+    else:
+        TempPiec = TempPiec-1
+    print(MocPiec)
+
 
 while True:
     xyz()
+    time.sleep(2.5)
 
-plt.show()
-#r1 IF Zmiana = Zimno THEN Maly
-#r2 IF Zmiana = Letnio  THEN Sredni
-#r3 IF Zmiana = Cieplo  THEN Duzy
-#r4 IF Zmiana = Goraco  THEN Max
-#r5 IF Zmiana<0 THEN Wylacz
