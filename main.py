@@ -3,10 +3,8 @@ import matplotlib.pyplot as plt
 import time
 
 
-
-
-TEMP = np.zeros((5, 48))
-for i in range(0,47):
+TEMP = np.zeros((5, 60))
+for i in range(0,60):
     x=i
     TEMP[0, i] = x
 
@@ -120,19 +118,17 @@ plt.axis([0,100,0,1.1])
 plt.plot(UST[0, :], UST[5, :], 'b')
 plt.axis([0,100,0,1.1])
 
-plt.show()
 
-MocPiec = 0
+#ZmiennePokoj
+MocPiec = 1
 TempZew = -5
 TempPiec = 0
-TempPokoju = TempZew + TempPiec
-#Pokoj
-TempUstawiana = 20
+TempPokoju = TempZew + int(TempPiec / 10)
+#Ustawienie
+TempUstawiana =30
 y=0
 
-#TEMP1= Zimno / TEMP2= Letnio / TEMP3 = Cieplo / TEMP4 = Goraco
-
-def xyz():
+def Tick():
     global MocPiec
     global y
     global Zmiana
@@ -140,11 +136,11 @@ def xyz():
     global TempPokoju
     global TempUstawiana
 
-
     if MocPiec==0:
-        TempPokoju = TempPokoju - 1
+        TempPokoju = TempPokoju - 2
     else:
-        TempPokoju = TempPokoju - 1 + int(TempPiec / 5)
+        TempPokoju = TempPokoju + int(TempPiec / 15)
+
 
     Zmiana = TempUstawiana - TempPokoju
 
@@ -177,9 +173,10 @@ def xyz():
     # r4 IF Zmiana = Goraco  THEN Max
     # r5 IF Zmiana<0 THEN Wylacz
 
-    if y<=0:
+
+    if y<=0 :
         MocPiec = 0
-    elif y >= 100:
+    elif y >= 100 :
         MocPiec = 5
     elif y >= 75:
         MocPiec = 4
@@ -188,14 +185,15 @@ def xyz():
     elif y >= 25:
         MocPiec = 2
 
+
     if MocPiec>0:
         TempPiec = TempPiec + MocPiec
     else:
-        TempPiec = TempPiec-1
+        TempPiec = TempPiec-2
     print(MocPiec)
 
 
 while True:
-    xyz()
-    time.sleep(2.5)
+    Tick()
+    time.sleep(0.1)
 
