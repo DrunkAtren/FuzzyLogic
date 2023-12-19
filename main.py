@@ -67,6 +67,7 @@ for i in range(0,100):
     else:
         UstWysoka = 0
     UST[3, i] = UstWysoka
+
 plt.figure(1)
 
 plt.xlabel('Temperatura [C]')
@@ -131,14 +132,11 @@ R1=min(T2,U1)
 R2=min(T3,U2)
 R3=min(T4,U3)
 
-
+print(TEMP)
 
 
 # print (US1,US2,US3,US4)
 print (R1,R2,R3)
 
 
-
-
-
-plt.show()
+#plt.show()
