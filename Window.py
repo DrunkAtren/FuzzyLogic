@@ -139,17 +139,19 @@ def wykresy():
     plt.plot(UST[0, :], UST[5, :], 'b')
     plt.axis([0,100,0,1.1])
 
-#TempZew = -5
-#TempPokoju = TempZew + int(TempPiec / 10)
-#TempUstawiana =30
-
 #Ustawienie
+f = None
+d = None
 MocPiec = 1
 TempPiec = 0
 y = 0
 
+#TempZew = -5
+#TempPokoju = TempZew + int(TempPiec / 10)
+#TempUstawiana =30
+
 TEMP_TIME = np.zeros((2, 10000))
-TEMP_FIRE_POWER = np.zeros((2, 10000))
+FIREPLACE_POWER = np.zeros((2, 10000))
 minutes = 0
 inc = 0
 
@@ -256,7 +258,7 @@ def update_fireplace():
         global minutes
         global inc
         global TEMP_TIME
-        global TEMP_FIRE_POWER
+        global FIREPLACE_POWER
         global y
         update_fire_texture()
         Tick()
@@ -264,48 +266,46 @@ def update_fireplace():
         inc = inc +1
         TEMP_TIME[0, inc] = minutes
         TEMP_TIME[1, inc] = TempPiec
-        TEMP_FIRE_POWER[0, inc] = minutes
-        TEMP_FIRE_POWER[1, inc] = y
+        FIREPLACE_POWER[0, inc] = minutes
+        FIREPLACE_POWER[1, inc] = y
 def update_graph_fire_power():
     d = plt.figure(4)
     b = d.add_subplot(111)
-    plt.xlabel('Czas[5min]')
-    plt.ylabel('Moc Pieca')
-    plt.title('Wykres wzrostu mocy')
-    b.plot(TEMP_FIRE_POWER[0, :], TEMP_FIRE_POWER[1, :], 'blue')
+    b.set_title('Wykres wzrostu mocy w czasie')
+    b.set_xlabel('Czas[5min]')
+    b.set_ylabel('Moc Pieca')
+    b.plot(FIREPLACE_POWER[0, :], FIREPLACE_POWER[1, :], 'blue')
     frm = tk.Frame(window)
     frm.place(x=1180, y=20)
 
     canvas = FigureCanvasTkAgg(d, master=frm)
     canvas.draw()
     canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
 def update_graph_temp_time():
     f = plt.figure(5)
     a = f.add_subplot(111)
-    plt.xlabel('Czas[5min]')
-    plt.ylabel('Temperatura[1C]')
-    plt.title('Wykres wzorstu temperatury pieca w czasie')
     a.plot(TEMP_TIME[0, :], TEMP_TIME[1, :], 'blue')
-
+    a.set_title('Wykres wzorstu temperatury pieca w czasie')
+    a.set_xlabel('Czas[5min]')
+    a.set_ylabel('Temperatura[1C]')
     frm1 = tk.Frame(window)
     frm1.place(x=1180, y=500)
 
     canvas1 = FigureCanvasTkAgg(f, master=frm1)
     canvas1.draw()
     canvas1.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-def clear_graph_fire_place_temp():
+def clear_graphs():
     global f
-    f = plt.clf()
-def clear_graph_fire_power():
     global d
-    d = plt.clf()
+    f = plt.close()
+    d = plt.close()
 def update_checkbox():
-    clear_graph_fire_place_temp()
-    clear_graph_fire_power()
+    clear_graphs()
     update_fireplace()
     update_graph_fire_power()
     update_graph_temp_time()
-    window.after(3000, update_checkbox)
+    window.after(5000, update_checkbox)
 def update_outside_temperature():
     season = int(slider_season.get()) - 1
     hour = int(slider_time.get())
@@ -368,9 +368,6 @@ label_fireplace_temp.place(x=70, y=180)
 checkbox = customtkinter.CTkCheckBox(master=frame, text="Włączenie Pieca:", command=update_checkbox, variable=check_var, onvalue=1, offvalue=0)
 checkbox.pack(padx=20, pady=10)
 checkbox.place(x=830, y=440)
-
-
-
 
 window.after(0, update_fire_gif, 0)
 window.mainloop()
