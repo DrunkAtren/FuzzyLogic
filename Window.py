@@ -25,13 +25,13 @@ TEMP_OUTSIDE = np.array([
 ])
 check_var = tk.IntVar()
 
-TEMP = np.zeros((5, 60))
-for i in range(0,60):
+TEMP = np.zeros((5, 120))
+for i in range(0,120):
     x=i
     TEMP[0, i] = x
 
     #temperatura zimno
-    if x >= 0 and x <= 5:
+    if x >= -30 and x <= 5:
        zimno = 1
     elif x >= 5 and x <= 15:
        zimno = (15-x)/(15-5)
