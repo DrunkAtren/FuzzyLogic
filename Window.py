@@ -174,7 +174,6 @@ def Tick():
     hour = int(slider_time.get())
     TempUstawiana = round(slider_fireplace_temp.get())
     TempZew = TEMP_OUTSIDE[season, hour]
-    TempPokoju = TempZew + int(TempPiec / 10)
 
     if MocPiec==0:
         if TempPokoju!=TempZew:
