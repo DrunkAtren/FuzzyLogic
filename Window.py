@@ -148,9 +148,9 @@ TempPiec = 0
 y = 0
 
 #TempZew = -5
-#TempPokoju = TempZew + int(TempPiec / 10)
 #TempUstawiana =30
-
+#TempPokoju = TempZew + int(TempPiec / 10)
+TempPokoju = 0
 TEMP_TIME = np.zeros((2, 10000))
 FIREPLACE_POWER = np.zeros((2, 10000))
 TEMP_ROOM = np.zeros((2, 10000))
@@ -278,7 +278,7 @@ def update_fireplace():
         TEMP_ROOM[0, inc] = minutes
         TEMP_ROOM[1, inc] = TempPokoju
 def update_graph_temp_room():
-    c = plt.figure(5)
+    c = plt.figure(6)
     v = c.add_subplot(111)
     v.set_title('Wykres wzrostu temperatury w pokoju w czasie')
     v.set_xlabel('Czas[5min]')
