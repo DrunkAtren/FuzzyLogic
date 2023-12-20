@@ -174,9 +174,13 @@ def Tick():
     hour = int(slider_time.get())
     TempUstawiana = round(slider_fireplace_temp.get())
     TempZew = TEMP_OUTSIDE[season, hour]
+    TempPokoju = TempZew + int(TempPiec / 10)
 
     if MocPiec==0:
-        TempPokoju = TempPokoju - 1
+        if TempPokoju!=TempZew:
+            TempPokoju = TempPokoju - 1
+        else:
+            TempPokoju = TempPokoju
     else:
         TempPokoju = TempZew + int(TempPiec / 2)
 
@@ -422,6 +426,9 @@ lb_singleton_data.place(x=1100, y=200)
 lb_fireplace_power_percentage_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="Wynik środka ciężkości: 0.0")
 lb_fireplace_power_percentage_data.pack(pady=12, padx=10)
 lb_fireplace_power_percentage_data.place(x=1100, y=240)
+lb_fireplace_power_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0")
+lb_fireplace_power_data.pack(pady=12, padx=10)
+lb_fireplace_power_data.place(x=1100, y=280)
 
 checkbox = customtkinter.CTkCheckBox(master=frame, text="Włączenie Pieca:", command=update_checkbox, variable=check_var, onvalue=1, offvalue=0)
 checkbox.pack(padx=20, pady=10)
