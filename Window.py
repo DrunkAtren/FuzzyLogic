@@ -173,10 +173,12 @@ def Tick():
     hour = int(slider_time.get())
     TempUstawiana = round(slider_fireplace_temp.get())
     TempZew = TEMP_OUTSIDE[season, hour]
-    TempPokoju = TempZew + int(TempPiec / 10)
 
     if MocPiec==0:
-        TempPokoju = TempPokoju - 1
+        if TempPokoju!=TempZew:
+            TempPokoju = TempPokoju - 1
+        else:
+            TempPokoju = TempPokoju
     else:
         TempPokoju = TempZew + int(TempPiec / 2)
 
@@ -339,7 +341,7 @@ def update_checkbox():
     update_graph_temp_room()
     update_graph_fire_power()
     update_graph_temp_time()
-    window.after(5000, update_checkbox)
+    window.after(1000, update_checkbox)
 def update_outside_temperature():
     season = int(slider_season.get()) - 1
     hour = int(slider_time.get())
