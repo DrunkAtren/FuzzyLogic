@@ -233,21 +233,29 @@ def Tick():
         else:
             TempPiec = TempPiec-2
     print(MocPiec)
+
+    lb_fireplace_temp_data.configure(text=f"{TempPiec} Temperatura Pieca")
+    lb_room_temp_data.configure(text=f"{TempPokoju} Temperatura Pokoju")
+    lb_room_fireplace_diff_data.configure(text=f"{Zmiana} Zmiana")
+    lb_sigleton_data.configure(text=f"{TEMP[1, Zmiana], TEMP[2, Zmiana], TEMP[3, Zmiana], TEMP[4, Zmiana]}")
+    lb_fireplace_power_percentage_data.configure(text=f"{y}%")
+    lb_fireplace_power_data.configure(text=f"{MocPiec}")
+
 def update_fire_texture():
     global TempPiec
     TEMP_FIREPLACE = TempPiec
     global srcFlameGif
-    if TEMP_FIREPLACE < 5:
+    if TEMP_FIREPLACE <= 5:
         srcFlameGif = [PhotoImage(file='smoke.gif', format='gif -index %i' % (i)) for i in range(frameCnt)]
-    elif TEMP_FIREPLACE > 5 and TEMP_FIREPLACE <=10:
+    elif TEMP_FIREPLACE > 5 and TEMP_FIREPLACE <=15:
         srcFlameGif = [PhotoImage(file='ogien1.gif', format='gif -index %i' % (i)) for i in range(frameCnt)]
-    elif TEMP_FIREPLACE > 10 and TEMP_FIREPLACE <=15:
+    elif TEMP_FIREPLACE > 15 and TEMP_FIREPLACE <=30:
         srcFlameGif = [PhotoImage(file='ogien2.gif', format='gif -index %i' % (i)) for i in range(frameCnt)]
-    elif TEMP_FIREPLACE >15 and TEMP_FIREPLACE <=20:
+    elif TEMP_FIREPLACE >30 and TEMP_FIREPLACE <=45:
         srcFlameGif = [PhotoImage(file='ogien3.gif', format='gif -index %i' % (i)) for i in range(frameCnt)]
-    elif TEMP_FIREPLACE >20 and TEMP_FIREPLACE <=25:
+    elif TEMP_FIREPLACE >45 and TEMP_FIREPLACE <=60:
         srcFlameGif = [PhotoImage(file='ogien4.gif', format='gif -index %i' % (i)) for i in range(frameCnt)]
-    elif (TEMP_FIREPLACE >25) and (TEMP_FIREPLACE <=30):
+    elif (TEMP_FIREPLACE >60):
         srcFlameGif = [PhotoImage(file='ogien5.gif', format='gif -index %i' % (i)) for i in range(frameCnt)]
     else:
         print("Blad")
@@ -285,7 +293,7 @@ def update_graph_temp_room():
     v.set_ylabel('Temperatura[1C]')
     v.plot(TEMP_ROOM[0, :], TEMP_ROOM[1, :], 'blue')
     frm2 = tk.Frame(window)
-    frm2.place(x=50, y=500)
+    frm2.place(x=60, y=500)
 
     canvas3 = FigureCanvasTkAgg(c, master=frm2)
     canvas3.draw()
@@ -298,12 +306,12 @@ def update_graph_fire_power():
     b.set_ylabel('Moc Pieca')
     b.plot(FIREPLACE_POWER[0, :], FIREPLACE_POWER[1, :], 'blue')
     frm = tk.Frame(window)
-    frm.place(x=1180, y=20)
+    #frm.place(x=1180, y=20)
+    frm.place(x=650, y=500)
 
     canvas = FigureCanvasTkAgg(d, master=frm)
     canvas.draw()
     canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-
 def update_graph_temp_time():
     f = plt.figure(5)
     a = f.add_subplot(111)
@@ -312,7 +320,7 @@ def update_graph_temp_time():
     a.set_xlabel('Czas[5min]')
     a.set_ylabel('Temperatura[1C]')
     frm1 = tk.Frame(window)
-    frm1.place(x=1180, y=500)
+    frm1.place(x=1250, y=500)
 
     canvas1 = FigureCanvasTkAgg(f, master=frm1)
     canvas1.draw()
@@ -327,9 +335,9 @@ def clear_graphs():
 def update_checkbox():
     clear_graphs()
     update_fireplace()
+    update_graph_temp_room()
     update_graph_fire_power()
     update_graph_temp_time()
-    update_graph_temp_room()
     window.after(5000, update_checkbox)
 def update_outside_temperature():
     season = int(slider_season.get()) - 1
@@ -363,23 +371,23 @@ lbFlame.place(x=800, y=40)
 
 slider_season = customtkinter.CTkSlider(master=frame, command=season_slider, from_=1, to=4, number_of_steps=3)
 slider_season.pack(pady=12, padx=10)
-slider_season.place(x=70, y=60)
+slider_season.place(x=500, y=120)
 
 slider_time = customtkinter.CTkSlider(master=frame, command=time_slider, from_=0, to=23, number_of_steps=23)
 slider_time.pack(pady=12, padx=10)
-slider_time.place(x=70, y=140)
+slider_time.place(x=500, y=180)
 
 slider_fireplace_temp = customtkinter.CTkSlider(master=frame, command=room_temp_slider, from_=0, to =30, number_of_steps=30)
 slider_fireplace_temp.pack(pady=12, padx=10)
-slider_fireplace_temp.place(x=70, y=230)
+slider_fireplace_temp.place(x=500, y=250)
 
 label_season = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Pora roku: Lato")
 label_season.pack(pady=12, padx=10)
-label_season.place(x=120, y=20)
+label_season.place(x=550, y=85)
 
 label_time = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Godzina: {round(slider_time.get())}")
 label_time.pack(pady=12, padx=10)
-label_time.place(x=120, y=100)
+label_time.place(x=550, y=145)
 
 label_outside_temp = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Temperatura na zewnątrz: 20")
 label_outside_temp.pack(pady=12, padx=10)
@@ -388,7 +396,26 @@ label_outside_temp.place(x=800, y=400)
 label_fireplace_temp = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black",
                                               text=f"Docelowa temperatura Pokoju: {round(slider_fireplace_temp.get())}")
 label_fireplace_temp.pack(pady=12, padx=10)
-label_fireplace_temp.place(x=70, y=180)
+label_fireplace_temp.place(x=500, y=205)
+
+lb_fireplace_temp_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0 Temperatura Pieca")
+lb_fireplace_temp_data.pack(pady=12, padx=10)
+lb_fireplace_temp_data.place(x=1100, y=80)
+lb_room_temp_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0 Temperatura Pokoju")
+lb_room_temp_data.pack(pady=12, padx=10)
+lb_room_temp_data.place(x=1100, y=120)
+lb_room_fireplace_diff_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0 Zmiana")
+lb_room_fireplace_diff_data.pack(pady=12, padx=10)
+lb_room_fireplace_diff_data.place(x=1100, y=160)
+lb_sigleton_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0.0 0.0 0.0 0.0")
+lb_sigleton_data.pack(pady=12, padx=10)
+lb_sigleton_data.place(x=1100, y=200)
+lb_fireplace_power_percentage_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0.0")
+lb_fireplace_power_percentage_data.pack(pady=12, padx=10)
+lb_fireplace_power_percentage_data.place(x=1100, y=240)
+lb_fireplace_power_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0")
+lb_fireplace_power_data.pack(pady=12, padx=10)
+lb_fireplace_power_data.place(x=1100, y=280)
 
 checkbox = customtkinter.CTkCheckBox(master=frame, text="Włączenie Pieca:", command=update_checkbox, variable=check_var, onvalue=1, offvalue=0)
 checkbox.pack(padx=20, pady=10)
