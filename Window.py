@@ -174,7 +174,6 @@ def Tick():
     hour = int(slider_time.get())
     TempUstawiana = round(slider_fireplace_temp.get())
     TempZew = TEMP_OUTSIDE[season, hour]
-    TempPokoju = TempZew + int(TempPiec / 10)
 
     if MocPiec==0:
         if TempPokoju!=TempZew:
@@ -365,7 +364,6 @@ def season_slider(value):
             lb_season.configure(text=f"Pora roku: Zima")
         case _:
             lb_season.configure(text=f"Pora roku: Błąd zła pora roku")
-    #lable_season.configure(text=f"Pora roku: {round(slider_season.get())}")
     update_outside_temperature()
 def time_slider(value):
     lb_time.configure(text=f"Godzina: {round(slider_time.get())}")
