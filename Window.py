@@ -142,6 +142,7 @@ def wykresy():
 #Ustawienie
 f = None
 d = None
+c = None
 MocPiec = 1
 TempPiec = 0
 y = 0
@@ -152,6 +153,7 @@ y = 0
 
 TEMP_TIME = np.zeros((2, 10000))
 FIREPLACE_POWER = np.zeros((2, 10000))
+TEMP_ROOM = np.zeros((2, 10000))
 minutes = 0
 inc = 0
 
@@ -226,7 +228,10 @@ def Tick():
     if MocPiec>0:
         TempPiec = TempPiec + MocPiec
     else:
-        TempPiec = TempPiec-2
+        if TempPiec <= 0:
+            TempPiec = 0
+        else:
+            TempPiec = TempPiec-2
     print(MocPiec)
 def update_fire_texture():
     global TempPiec
@@ -258,8 +263,10 @@ def update_fireplace():
         global minutes
         global inc
         global TEMP_TIME
+        global TEMP_ROOM
         global FIREPLACE_POWER
         global y
+        global TempPokoju
         update_fire_texture()
         Tick()
         minutes = minutes +5
@@ -268,6 +275,21 @@ def update_fireplace():
         TEMP_TIME[1, inc] = TempPiec
         FIREPLACE_POWER[0, inc] = minutes
         FIREPLACE_POWER[1, inc] = y
+        TEMP_ROOM[0, inc] = minutes
+        TEMP_ROOM[1, inc] = TempPokoju
+def update_graph_temp_room():
+    c = plt.figure(5)
+    v = c.add_subplot(111)
+    v.set_title('Wykres wzrostu temperatury w pokoju w czasie')
+    v.set_xlabel('Czas[5min]')
+    v.set_ylabel('Temperatura[1C]')
+    v.plot(TEMP_ROOM[0, :], TEMP_ROOM[1, :], 'blue')
+    frm2 = tk.Frame(window)
+    frm2.place(x=50, y=500)
+
+    canvas3 = FigureCanvasTkAgg(c, master=frm2)
+    canvas3.draw()
+    canvas3.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 def update_graph_fire_power():
     d = plt.figure(4)
     b = d.add_subplot(111)
@@ -298,13 +320,16 @@ def update_graph_temp_time():
 def clear_graphs():
     global f
     global d
+    global c
     f = plt.close()
     d = plt.close()
+    c = plt.close()
 def update_checkbox():
     clear_graphs()
     update_fireplace()
     update_graph_fire_power()
     update_graph_temp_time()
+    update_graph_temp_room()
     window.after(5000, update_checkbox)
 def update_outside_temperature():
     season = int(slider_season.get()) - 1
@@ -329,7 +354,7 @@ def time_slider(value):
     label_time.configure(text=f"Godzina: {round(slider_time.get())}")
     update_outside_temperature()
 def room_temp_slider(value):
-    label_fireplace_temp.configure(text=f"Docelowa temperatura Pieca: {round(slider_fireplace_temp.get())}")
+    label_fireplace_temp.configure(text=f"Docelowa temperatura Pokoju: {round(slider_fireplace_temp.get())}")
 
 
 lbFlame = Label(window)
