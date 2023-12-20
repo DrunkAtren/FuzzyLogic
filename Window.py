@@ -138,6 +138,7 @@ def wykresy():
 
     plt.plot(UST[0, :], UST[5, :], 'b')
     plt.axis([0,100,0,1.1])
+    plt.show()
 
 #Ustawienie
 f = None
@@ -157,8 +158,8 @@ TEMP_ROOM = np.zeros((2, 10000))
 minutes = 0
 inc = 0
 
-frameCnt = 19
-srcFlameGif = [PhotoImage(file='smoke.gif', format='gif -index %i' % (i)) for i in range(frameCnt)]
+frameCnt = 19 #klatki animacji
+srcFlameGif = [PhotoImage(file='smoke.gif', format='gif -index %i' % (i)) for i in range(frameCnt)] #src link do gifa
 
 
 def Tick():
@@ -173,7 +174,6 @@ def Tick():
     hour = int(slider_time.get())
     TempUstawiana = round(slider_fireplace_temp.get())
     TempZew = TEMP_OUTSIDE[season, hour]
-    TempPokoju = TempZew + int(TempPiec / 10)
 
     if MocPiec==0:
         TempPokoju = TempPokoju - 1
@@ -237,9 +237,8 @@ def Tick():
     lb_fireplace_temp_data.configure(text=f"{TempPiec} Temperatura Pieca")
     lb_room_temp_data.configure(text=f"{TempPokoju} Temperatura Pokoju")
     lb_room_fireplace_diff_data.configure(text=f"{Zmiana} Zmiana")
-    lb_sigleton_data.configure(text=f"{TEMP[1, Zmiana], TEMP[2, Zmiana], TEMP[3, Zmiana], TEMP[4, Zmiana]}")
-    lb_fireplace_power_percentage_data.configure(text=f"{y}%")
-    lb_fireplace_power_data.configure(text=f"{MocPiec}")
+    lb_singleton_data.configure(text=f"Rozmycie: {TEMP[1, Zmiana], TEMP[2, Zmiana], TEMP[3, Zmiana], TEMP[4, Zmiana]}")
+    lb_fireplace_power_percentage_data.configure(text=f"Wynik środka ciężkości: {y}%")
 
 def update_fire_texture():
     global TempPiec
@@ -291,7 +290,7 @@ def update_graph_temp_room():
     v.set_title('Wykres wzrostu temperatury w pokoju w czasie')
     v.set_xlabel('Czas[5min]')
     v.set_ylabel('Temperatura[1C]')
-    v.plot(TEMP_ROOM[0, :], TEMP_ROOM[1, :], 'blue')
+    v.plot(TEMP_ROOM[0, :], TEMP_ROOM[1, :], 'black')
     frm2 = tk.Frame(window)
     frm2.place(x=60, y=500)
 
@@ -304,7 +303,7 @@ def update_graph_fire_power():
     b.set_title('Wykres wzrostu mocy w czasie')
     b.set_xlabel('Czas[5min]')
     b.set_ylabel('Moc Pieca')
-    b.plot(FIREPLACE_POWER[0, :], FIREPLACE_POWER[1, :], 'blue')
+    b.plot(FIREPLACE_POWER[0, :], FIREPLACE_POWER[1, :], 'black')
     frm = tk.Frame(window)
     #frm.place(x=1180, y=20)
     frm.place(x=650, y=500)
@@ -316,7 +315,7 @@ def update_graph_fire_power():
 def update_graph_temp_time():
     f = plt.figure(5)
     a = f.add_subplot(111)
-    a.plot(TEMP_TIME[0, :], TEMP_TIME[1, :], 'blue')
+    a.plot(TEMP_TIME[0, :], TEMP_TIME[1, :], 'black')
     a.set_title('Wykres wzorstu temperatury pieca w czasie')
     a.set_xlabel('Czas[5min]')
     a.set_ylabel('Temperatura[1C]')
@@ -334,37 +333,46 @@ def clear_graphs():
     d = plt.close()
     c = plt.close()
 def update_checkbox():
-    clear_graphs()
-    update_fireplace()
-    update_graph_temp_room()
-    update_graph_fire_power()
-    update_graph_temp_time()
-    window.after(5000, update_checkbox)
+    global check_var
+    if(check_var.get() == 1):
+        clear_graphs()
+        update_fireplace()
+        update_graph_temp_room()
+        update_graph_fire_power()
+        update_graph_temp_time()
+        window.after(4000, update_checkbox)
+    else:
+        clear_graphs()
+
 def update_outside_temperature():
     season = int(slider_season.get()) - 1
     hour = int(slider_time.get())
-    label_outside_temp.configure(text=f"Temperatura na zewnątrz: {TEMP_OUTSIDE[season, hour]}")
+    lb_outside_temp.configure(text=f"Temperatura na zewnątrz: {TEMP_OUTSIDE[season, hour]}")
 def season_slider(value):
     season = slider_season.get()
     match season:
         case 1:
-            label_season.configure(text=f"Pora roku: Wiosna")
+            lb_season.configure(text=f"Pora roku: Wiosna")
         case 2:
-            label_season.configure(text=f"Pora roku: Lato")
+            lb_season.configure(text=f"Pora roku: Lato")
         case 3:
-            label_season.configure(text=f"Pora roku: Jesień")
+            lb_season.configure(text=f"Pora roku: Jesień")
         case 4:
-            label_season.configure(text=f"Pora roku: Zima")
+            lb_season.configure(text=f"Pora roku: Zima")
         case _:
-            label_season.configure(text=f"Pora roku: Błąd zła pora roku")
+            lb_season.configure(text=f"Pora roku: Błąd zła pora roku")
     #lable_season.configure(text=f"Pora roku: {round(slider_season.get())}")
     update_outside_temperature()
 def time_slider(value):
-    label_time.configure(text=f"Godzina: {round(slider_time.get())}")
+    lb_time.configure(text=f"Godzina: {round(slider_time.get())}")
     update_outside_temperature()
 def room_temp_slider(value):
-    label_fireplace_temp.configure(text=f"Docelowa temperatura Pokoju: {round(slider_fireplace_temp.get())}")
-
+    lb_fireplace_temp.configure(text=f"Docelowa temperatura Pokoju: {round(slider_fireplace_temp.get())}")
+def on_closing():
+    checkbox.deselect()
+    clear_graphs()
+    window.quit()
+    window.destroy()
 
 lbFlame = Label(window)
 lbFlame.pack(pady=12, padx=10)
@@ -382,22 +390,22 @@ slider_fireplace_temp = customtkinter.CTkSlider(master=frame, command=room_temp_
 slider_fireplace_temp.pack(pady=12, padx=10)
 slider_fireplace_temp.place(x=500, y=250)
 
-label_season = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Pora roku: Lato")
-label_season.pack(pady=12, padx=10)
-label_season.place(x=550, y=85)
+lb_season = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Pora roku: Lato")
+lb_season.pack(pady=12, padx=10)
+lb_season.place(x=550, y=85)
 
-label_time = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Godzina: {round(slider_time.get())}")
-label_time.pack(pady=12, padx=10)
-label_time.place(x=550, y=145)
+lb_time = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Godzina: {round(slider_time.get())}")
+lb_time.pack(pady=12, padx=10)
+lb_time.place(x=550, y=145)
 
-label_outside_temp = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Temperatura na zewnątrz: 20")
-label_outside_temp.pack(pady=12, padx=10)
-label_outside_temp.place(x=800, y=400)
+lb_outside_temp = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text=f"Temperatura na zewnątrz: 20")
+lb_outside_temp.pack(pady=12, padx=10)
+lb_outside_temp.place(x=800, y=400)
 
-label_fireplace_temp = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black",
-                                              text=f"Docelowa temperatura Pokoju: {round(slider_fireplace_temp.get())}")
-label_fireplace_temp.pack(pady=12, padx=10)
-label_fireplace_temp.place(x=500, y=205)
+lb_fireplace_temp = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black",
+                                           text=f"Docelowa temperatura Pokoju: {round(slider_fireplace_temp.get())}")
+lb_fireplace_temp.pack(pady=12, padx=10)
+lb_fireplace_temp.place(x=500, y=205)
 
 lb_fireplace_temp_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0 Temperatura Pieca")
 lb_fireplace_temp_data.pack(pady=12, padx=10)
@@ -408,21 +416,20 @@ lb_room_temp_data.place(x=1100, y=120)
 lb_room_fireplace_diff_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0 Zmiana")
 lb_room_fireplace_diff_data.pack(pady=12, padx=10)
 lb_room_fireplace_diff_data.place(x=1100, y=160)
-lb_sigleton_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0.0 0.0 0.0 0.0")
-lb_sigleton_data.pack(pady=12, padx=10)
-lb_sigleton_data.place(x=1100, y=200)
-lb_fireplace_power_percentage_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0.0")
+lb_singleton_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="Rozmycie: 0.0 0.0 0.0 0.0")
+lb_singleton_data.pack(pady=12, padx=10)
+lb_singleton_data.place(x=1100, y=200)
+lb_fireplace_power_percentage_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="Wynik środka ciężkości: 0.0")
 lb_fireplace_power_percentage_data.pack(pady=12, padx=10)
 lb_fireplace_power_percentage_data.place(x=1100, y=240)
-lb_fireplace_power_data = customtkinter.CTkLabel(master=frame, corner_radius=16, fg_color="black", text="0")
-lb_fireplace_power_data.pack(pady=12, padx=10)
-lb_fireplace_power_data.place(x=1100, y=280)
 
 checkbox = customtkinter.CTkCheckBox(master=frame, text="Włączenie Pieca:", command=update_checkbox, variable=check_var, onvalue=1, offvalue=0)
 checkbox.pack(padx=20, pady=10)
 checkbox.place(x=830, y=440)
 
+#wykresy()
 window.after(0, update_fire_gif, 0)
+window.protocol("WM_DELETE_WINDOW", on_closing)
 window.mainloop()
 
 # https://wanderlog.com/weather/9642/8/warsaw-weather-in-august
