@@ -176,9 +176,9 @@ def Tick():
     TempPokoju = TempZew + int(TempPiec / 10)
 
     if MocPiec==0:
-        TempPokoju = TempPokoju - 2
+        TempPokoju = TempPokoju - 1
     else:
-        TempPokoju = TempPokoju + int(TempPiec / 15)
+        TempPokoju = TempZew + int(TempPiec / 2)
 
 
     Zmiana = TempUstawiana - TempPokoju
@@ -312,6 +312,7 @@ def update_graph_fire_power():
     canvas = FigureCanvasTkAgg(d, master=frm)
     canvas.draw()
     canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
 def update_graph_temp_time():
     f = plt.figure(5)
     a = f.add_subplot(111)
