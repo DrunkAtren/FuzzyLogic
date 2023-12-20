@@ -173,12 +173,11 @@ def Tick():
     hour = int(slider_time.get())
     TempUstawiana = round(slider_fireplace_temp.get())
     TempZew = TEMP_OUTSIDE[season, hour]
-    TempPokoju = TempZew + int(TempPiec / 10)
 
     if MocPiec==0:
-        TempPokoju = TempPokoju - 2
+        TempPokoju = TempPokoju - 1
     else:
-        TempPokoju = TempPokoju + int(TempPiec / 15)
+        TempPokoju = TempZew + int(TempPiec / 2)
 
 
     Zmiana = TempUstawiana - TempPokoju
@@ -278,12 +277,13 @@ def update_fireplace():
         TEMP_ROOM[0, inc] = minutes
         TEMP_ROOM[1, inc] = TempPokoju
 def update_graph_temp_room():
+
     c = plt.figure(6)
     v = c.add_subplot(111)
     v.set_title('Wykres wzrostu temperatury w pokoju w czasie')
     v.set_xlabel('Czas[5min]')
     v.set_ylabel('Temperatura[1C]')
-    v.plot(TEMP_ROOM[0, :], TEMP_ROOM[1, :], 'blue')
+    v.plot(TEMP_ROOM[0,:], TEMP_ROOM[1,:], 'blue')
     frm2 = tk.Frame(window)
     frm2.place(x=50, y=500)
 
@@ -330,7 +330,7 @@ def update_checkbox():
     update_graph_fire_power()
     update_graph_temp_time()
     update_graph_temp_room()
-    window.after(5000, update_checkbox)
+    window.after(1000, update_checkbox)
 def update_outside_temperature():
     season = int(slider_season.get()) - 1
     hour = int(slider_time.get())
